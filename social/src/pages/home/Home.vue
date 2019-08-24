@@ -1,16 +1,20 @@
 <template>
   <div>
-
-    <router-view/>
+    <h1>Social</h1>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
+  name: 'Home',
+  data () {
+    return {
+
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>
