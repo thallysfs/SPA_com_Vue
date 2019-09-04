@@ -2,11 +2,23 @@
 
   <login-template>
 
-    <h2>Login</h2>
+    <span slot="menuesquerdo">
+      <ul>
+        <img src="https://www.oficinadanet.com.br/imagens/post/19125/social.jpg" class="responsive-img">
+      </ul>
+    </span>
 
-    <input type="text" name="email" placeholder="E-mail" value="">
-    <input type="password" name="senha" placeholder="Senha" value="">
-    <button type="button" class="btn">Entrar</button>
+    <span slot="principal">
+      <h2>Login</h2>
+
+      <input type="text" name="email" placeholder="E-mail" value="">
+      <input type="password" name="senha" placeholder="Senha" value="">
+      <button type="button" class="btn">Entrar</button>
+    </span>
+
+
+
+
 
 
 
