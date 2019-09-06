@@ -11,16 +11,13 @@
     <span slot="principal">
       <h2>Login</h2>
 
-      <input type="text" name="email" placeholder="E-mail" value="">
-      <input type="password" name="senha" placeholder="Senha" value="">
-      <button type="button" class="btn">Entrar</button>
+        <input type="text" name="email" placeholder="E-mail" value="">
+        <input type="password" name="senha" placeholder="Senha" value="">
+        <button class="btn">Entrar</button>
+        <!-- v-on cria um evento onclick que nega o valor atual da variável. Se ela for false, ou clicar vira true e vice versa -->
+        <router-link class="btn orange" to="/cadastro" >Cadastre-se</router-link>
+
     </span>
-
-
-
-
-
-
 
   </login-template>
 
@@ -29,23 +26,16 @@
 
 <script>
 import LoginTemplate from '@/templates/LoginTemplate'
-import CardConteudoVue from '@/components/social/CardConteudoVue'
-import CardDetalheVue from '@/components/social/CardDetalheVue'
-import PublicarConteudoVue from '@/components/social/PublicarConteudoVue'
 
 
 export default {
   name: 'Login',
   data () {
     return {
-
     }
   },
   components:{
     LoginTemplate,
-    CardConteudoVue,
-    CardDetalheVue,
-    PublicarConteudoVue,
 
 
   }
