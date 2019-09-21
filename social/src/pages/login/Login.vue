@@ -51,10 +51,16 @@ export default {
         password: this.password
       })
       .then(response => {
-        console.log(response)
+        //console.log(response)
         if(response.data.token){
           //login efetuado com sucesso
           console.log('login com sucesso')
+          //JSON.stringify(response.data) transforma o obj data em string
+          sessionStorage.setItem('usuario', JSON.stringify(response.data));
+          //Aqui estou redirecionando o usuário para / "home" usando a variável global $router e método "push"
+          this.$router.push('/');
+
+
         }else if(response.data.status == false){
           //login não realizou
           console.log('login não existe')
@@ -73,6 +79,7 @@ export default {
       //aqui trataremos ou visualizaremos o erro
       .catch(e => {
         console.log(e)
+        alert("Erro: Tente novamente mais tarde!");
     })
 
     }

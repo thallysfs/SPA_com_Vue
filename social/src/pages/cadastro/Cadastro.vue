@@ -12,11 +12,11 @@
 
       <h2>Cadastro</h2>
 
-      <input type="text" name="nome" placeholder="Nome" value="">
-      <input type="text" name="email" placeholder="E-mail" value="">
-      <input type="password" name="senha" placeholder="Senha" value="">
-      <input type="password" name="senha" placeholder="Confirme a Senha" value="">
-      <button type="button" class="btn">Enviar</button>
+      <input type="text" name="nome" placeholder="Nome" v-model="name">
+      <input type="text" name="email" placeholder="E-mail" v-model="email">
+      <input type="password" name="senha" placeholder="Senha" v-model="password">
+      <input type="password" name="senha" placeholder="Confirme a Senha" v-model="password_confirmation">
+      <button type="button" class="btn" v-on:click="cadastro()">Enviar</button>
               <!-- v-on cria um evento onclick que nega o valor atual da variável. Se ela for false, ou clicar vira true e vice versa -->
        <router-link class="btn orange" to="/login" >Já tenho Conta</router-link>
 
@@ -35,18 +35,65 @@
 
 <script>
 import LoginTemplate from '@/templates/LoginTemplate'
+import axios from 'axios'
 
 
 export default {
   name: 'Cadastro',
   data () {
     return {
+      name:'',
+      email:'',
+      password:'',
+      password_confirmation:'',
     }
   },
   components:{
     LoginTemplate,
+  },
+  methods:{
+    cadastro(){
+      console.log("Cadastro realizado com sucesso!");
+      //neste ponto acessaremos a api do Laravel e passaremos as variáveis
+      axios.post('http://127.0.0.1:8000/api/cadastro', {
+        name: this.name,
+        email: this.email,
+        password: this.password,
+        password_confirmation: this.password_confirmation
+
+      })
+      .then(response => {
+        //console.log(response)
+        if(response.data.token){
+          //login efetuado com sucesso
+          console.log('login com sucesso')
+          //JSON.stringify(response.data) transforma o obj data em string
+          sessionStorage.setItem('usuario', JSON.stringify(response.data));
+          //Aqui estou redirecionando o usuário para / "home" usando a variável global $router e método "push"
+          this.$router.push('/');
 
 
+        }else if(response.data.status == false){
+          //login não realizou
+          alert('Erro no cadastro! Tente novamente mais tarde');
+        }else{
+          //erros de validação
+          console.log('erros de validação')
+          let erros = '';
+          //Object.values transforma o objeto reponse.data em array de valores
+          for(let erro of Object.values(response.data)){
+            erros += erro +" ";
+          }
+          alert(erros);
+        }
+      })
+      //aqui trataremos ou visualizaremos o erro
+      .catch(e => {
+        console.log(e)
+        alert("Erro: Tente novamente mais tarde!");
+    })
+
+    }
   }
 }
 </script>
