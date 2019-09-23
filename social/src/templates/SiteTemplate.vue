@@ -66,6 +66,7 @@ export default {
     GridVue,
     CardMenuVue,
   },
+  //este método é executado quando o componente é criado
   created() {
     console.log('created()');
     //criando uma variável e pegando ela pela session
