@@ -44,7 +44,6 @@
 
 <script>
 import SiteTemplate from '@/templates/SiteTemplate'
-import axios from 'axios'
 
 
 export default {
@@ -92,7 +91,7 @@ export default {
     perfil(){
 
       //neste ponto acessaremos a api do Laravel e passaremos as variáveis
-      axios.put('http://127.0.0.1:8000/api/perfil', {
+      this.$http.put(this.$urlAPI+'perfil', {
         name: this.name,
         email: this.email,
         imagem: this.imagem,
@@ -104,18 +103,18 @@ export default {
 
       .then(response => {
         //console.log(response)
-        if(response.data.token){
+        if(response.data.status){
           // login com sucesso
-          console.log(response.data);
-          this.usuario = response.data;
+          //console.log(response.data);
+          this.usuario = response.data.usuario;
           sessionStorage.setItem('usuario',JSON.stringify(this.usuario));
           alert('Perfil atualizado!');
 
-        }else{
+        }else if(response.data.status == false && response.data.validacao){
           // erros de validação
-          console.log('erros de validação')
+          //console.log('erros de validação')
           let erros = '';
-          for(let erro of Object.values(response.data)){
+          for(let erro of Object.values(response.data.erros)){
             erros += erro +" ";
           }
           alert(erros);

@@ -26,7 +26,6 @@
 
 <script>
 import LoginTemplate from '@/templates/LoginTemplate'
-import axios from 'axios'
 
 
 export default {
@@ -40,40 +39,38 @@ export default {
   components:{
     LoginTemplate,
 
-
   },
   methods:{
     login(){
       console.log("ok");
       //neste ponto acessaremos a api do Laravel e passaremos as variáveis
-      axios.post('http://127.0.0.1:8000/api/login', {
+      this.$http.post(this.$urlAPI+'login', {
         email: this.email,
         password: this.password
       })
       .then(response => {
         //console.log(response)
-        if(response.data.token){
+        if(response.data.status){
           //login efetuado com sucesso
           console.log('login com sucesso')
           //JSON.stringify(response.data) transforma o obj data em string
-          sessionStorage.setItem('usuario', JSON.stringify(response.data));
+          sessionStorage.setItem('usuario', JSON.stringify(response.data.usuario));
           //Aqui estou redirecionando o usuário para / "home" usando a variável global $router e método "push"
           this.$router.push('/');
-
-
-        }else if(response.data.status == false){
+        }else if(response.data.status == false && response.data.validacao){
           //login não realizou
-          console.log('login não existe')
-          alert('Login inválido!');
-        }else{
-          //erros de validação
-          console.log('erros de validação')
+          console.log('Erros de Validação')
           let erros = '';
           //Object.values transforma o objeto reponse.data em array de valores
-          for(let erro of Object.values(response.data)){
+          for(let erro of Object.values(response.data.erros)){
             erros += erro +" ";
           }
           alert(erros);
+
+        }else{
+          //Login não existe
+          console.log('Login não existe')
+          alert('Login inválido');
         }
       })
       //aqui trataremos ou visualizaremos o erro
