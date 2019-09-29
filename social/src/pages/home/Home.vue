@@ -5,12 +5,12 @@
     <span slot="menuesquerdo">
       <div class="row valign-wrapper">
         <grid-vue tamanho="4">
-          <img src="https://materializecss.com/images/yuna.jpg" alt="" class="circle responsive-img"> <!-- notice the "circle" class -->
+          <img :src="usuario.imagem" :alt="usuario.name" class="circle responsive-img"> <!-- notice the "circle" class -->
         </grid-vue>
         <grid-vue tamanho="8">
           <span class="black-text">
-            <h5>Maria Silva</h5>
-            This is a square image.
+            <h5>{{usuario.name}}</h5>
+            Descrição
           </span>
         </grid-vue>
       </div>
@@ -47,7 +47,15 @@ export default {
   name: 'Home',
   data () {
     return {
-
+      //criando variável para povoa-la com os dados da session mais abaixo no created()
+      usuario:false
+    }
+  },
+  created() {
+    //criando uma variável e pegando ela pela session
+    let usuarioAux = sessionStorage.getItem('usuario');
+    if(usuarioAux){
+      this.usuario = JSON.parse(usuarioAux);
     }
   },
   components:{

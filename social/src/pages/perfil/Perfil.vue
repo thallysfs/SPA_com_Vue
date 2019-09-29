@@ -4,7 +4,7 @@
 
     <span slot="menuesquerdo">
       <ul>
-        <img src="https://www.oficinadanet.com.br/imagens/post/19125/social.jpg" class="responsive-img">
+        <img :src="usuario.imagem" class="responsive-img">
       </ul>
     </span>
 
@@ -18,7 +18,7 @@
       <div class="file-field input-field">
           <div class="btn">
             <span>Imagem</span>
-            <input type="file">
+            <input type="file" v-on:change="salvaImagem">
           </div>
           <div class="file-path-wrapper">
             <input class="file-path validate" type="text">
@@ -57,6 +57,7 @@ export default {
       email:'',
       password:'',
       password_confirmation:'',
+      imagem:'',
     }
   },
   created() {
@@ -72,14 +73,32 @@ export default {
     SiteTemplate,
   },
   methods:{
+
+    salvaImagem(e){
+      //o método target.file = pega o caminho do upload, o dataTransfer.files possibilita pegar o caminho do upload arrastando e soltando o arquivo
+      let arquivo = e.target.files || e.dataTransfer.files;
+      if(!arquivo.length){
+        return;
+      }
+
+      let reader = new FileReader();
+      reader.onloadend = (e) => {
+        this.imagem = e.target.result;
+      };
+      reader.readAsDataURL(arquivo[0]);
+    },
+
+
     perfil(){
 
       //neste ponto acessaremos a api do Laravel e passaremos as variáveis
       axios.put('http://127.0.0.1:8000/api/perfil', {
         name: this.name,
         email: this.email,
+        imagem: this.imagem,
         password: this.password,
         password_confirmation: this.password_confirmation
+
       //configuração e envio do token, obs.: a palavra Bearer deve vir com um espaçõ + token
       },{"headers":{"authorization":"Bearer "+ this.usuario.token}})
 
@@ -88,7 +107,8 @@ export default {
         if(response.data.token){
           // login com sucesso
           console.log(response.data);
-          sessionStorage.setItem('usuario',JSON.stringify(response.data));
+          this.usuario = response.data;
+          sessionStorage.setItem('usuario',JSON.stringify(this.usuario));
           alert('Perfil atualizado!');
 
         }else{
