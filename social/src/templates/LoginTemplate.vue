@@ -64,22 +64,15 @@ export default {
   },
   created() {
     console.log('created()');
-    //criando uma variável e pegando ela pela session
-    let usuarioAux = sessionStorage.getItem('usuario');
+    //criando uma variável e pegando ela pela session pelo Vuex definido social\src\main.js
+    let usuarioAux = this.$store.getters.getUsuario;
     if(usuarioAux){
-      this.usuario = JSON.parse(usuarioAux);
+      this.usuario = this.$store.getters.getUsuario;
       //Aqui estou redirecionando o usuário para / "home" usando a variável global $router e método "push"
           this.$router.push('/');
 
     }
-  },
-  methods: {
-    sair(){
-      //limpar a sessão do storange no browser
-      sessionStorage.clear();
-      this.usuario = false;
-    }
-  },
+  }
 }
 </script>
 

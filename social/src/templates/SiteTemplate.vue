@@ -71,19 +71,22 @@ export default {
   //este método é executado quando o componente é criado
   created() {
     console.log('created()');
-    //criando uma variável e pegando ela pela session
-    let usuarioAux = sessionStorage.getItem('usuario');
+    //criando uma variável e pegando ela pela session pelo Vuex definido social\src\main.js
+    let usuarioAux = this.$store.getters.getUsuario;
     if(usuarioAux){
-      this.usuario = JSON.parse(usuarioAux);
+      this.usuario = this.$store.getters.getUsuario;
     }else{
       this.$router.push('/login');
     }
   },
   methods: {
     sair(){
+      //abaixo uso o método do Vuex para setar usuario como null
+      this.$store.commit('setUsuario', null);
       //limpar a sessão do storange no browser
       sessionStorage.clear();
       this.usuario = false;
+      //redirecionando para a tela de login
       this.$router.push('/login');
     }
   },

@@ -53,6 +53,8 @@ export default {
         if(response.data.status){
           //login efetuado com sucesso
           console.log('login com sucesso')
+          //setando o Vuex
+          this.$store.commit('setUsuario', response.data.usuario);
           //JSON.stringify(response.data) transforma o obj data em string
           sessionStorage.setItem('usuario', JSON.stringify(response.data.usuario));
           //Aqui estou redirecionando o usuário para / "home" usando a variável global $router e método "push"
