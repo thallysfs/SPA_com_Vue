@@ -60,10 +60,10 @@ export default {
     }
   },
   created() {
-    //criando uma variável e pegando ela pela session
-    let usuarioAux = sessionStorage.getItem('usuario');
+    //criando uma variável e pegando ela pela session pelo Vuex definido social\src\main.js
+    let usuarioAux = this.$store.getters.getUsuario;
     if(usuarioAux){
-      this.usuario = JSON.parse(usuarioAux);
+      this.usuario = this.$store.getters.getUsuario;
       this.name = this.usuario.name;
       this.email = this.usuario.email;
     }
@@ -99,7 +99,7 @@ export default {
         password_confirmation: this.password_confirmation
 
       //configuração e envio do token, obs.: a palavra Bearer deve vir com um espaçõ + token
-      },{"headers":{"authorization":"Bearer "+ this.usuario.token}})
+      },{"headers":{"authorization":"Bearer "+ this.$store.getters.getToken}})
 
       .then(response => {
         //console.log(response)
@@ -107,6 +107,8 @@ export default {
           // login com sucesso
           //console.log(response.data);
           this.usuario = response.data.usuario;
+          //setando o Vuex
+          this.$store.commit('setUsuario', response.data.usuario);
           sessionStorage.setItem('usuario',JSON.stringify(this.usuario));
           alert('Perfil atualizado!');
 

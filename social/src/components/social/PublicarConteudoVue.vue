@@ -21,7 +21,7 @@ import GridVue from '@/components/layouts/GridVue'
 
 export default {
   name: 'PublicarConteudoVue',
-  props:['usuario'],
+  props:[],
   data () {
     return {
       conteudo:{titulo:'', texto:'', link:'', imagem:''}
@@ -39,7 +39,7 @@ export default {
         link: this.conteudo.link,
         imagem: this.conteudo.imagem
       },
-      {"headers":{"authorization":"Bearer "+ this.usuario.token}}).then(response =>{
+      {"headers":{"authorization":"Bearer "+ this.$store.getters.getToken}}).then(response =>{
         //se status for true ele entrará no if
         if(response.data.status){
           console.log(response.data.conteudos);
