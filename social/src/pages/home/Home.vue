@@ -17,7 +17,7 @@
     </span>
 
     <span slot="principal">
-      <publicar-conteudo-vue/>
+      <publicar-conteudo-vue :usuario="usuarios" />
 
 
         <card-conteudo-vue perfil="https://materializecss.com/images/yuna.jpg"
