@@ -51,6 +51,11 @@ class User extends Authenticatable
         return $this->belongsToMany('App\User', 'amigos', 'user_id', 'amigo_id');
     }
 
+    public function getImagemAttribute($value){
+        //estou pegando o dado da tabela imagem e forçando a retornar a URL completa
+        return asset($value);
+    }
+
 
 
 

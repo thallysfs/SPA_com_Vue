@@ -19,14 +19,15 @@
     <span slot="principal">
       <publicar-conteudo-vue/>
 
-
-        <card-conteudo-vue perfil="https://materializecss.com/images/yuna.jpg"
-        nome="Maria Silva"
-        data="13/01/18 13:30">
+  <!-- O 'item' é o indice da variável conteudo que setamos abaixo com o retorno do Laravel -->
+        <card-conteudo-vue v-for="item in conteudos" :key="item.id"
+        :perfil="item.user.imagem"
+        :nome="item.user.name"
+        :data="item.data">
           <card-detalhe-vue
-            img="https://materializecss.com/images/sample-1.jpg"
-            titulo=""
-            txt="Uma linda imagem!!!" />
+            :img="item.imagem"
+            :titulo="item.titulo"
+            :txt="item.texto" />
         </card-conteudo-vue>
     </span>
 
@@ -48,14 +49,38 @@ export default {
   data () {
     return {
       //criando variável para povoa-la com os dados da session mais abaixo no created()
-      usuario:false
+      usuario:false,
+      conteudos:[]
     }
   },
   created() {
     //criando uma variável e pegando ela pela session
-    let usuarioAux = this.$store.getters.getUsuario;;
+    let usuarioAux = this.$store.getters.getUsuario;
     if(usuarioAux){
-      this.usuario = this.$store.getters.getUsuario;;
+      this.usuario = this.$store.getters.getUsuario;
+
+      //neste ponto acessaremos a api do Laravel e passaremos as variáveis
+      this.$http.get(this.$urlAPI+'conteudo/lista',
+      //configuração e envio do token, obs.: a palavra Bearer deve vir com um espaçõ + token
+      {"headers":{"authorization":"Bearer "+ this.$store.getters.getToken}})
+      .then(response => {
+        //aqui é retornado a variável 'conteudos' enviada no return do método lista no conteudoController
+        console.log(response);
+        if(response.data.status){
+          //Aqui eu alimento a variável conteudo que criei no data() acima com os valores retornados pelo Laravel
+          this.conteudos = response.data.conteudos.data;
+        }
+
+
+      })
+
+      //aqui trataremos ou visualizaremos o erro
+      .catch(e => {
+        console.log(e)
+        alert("Erro: Tente novamente mais tarde!!!");
+    })
+
+
     }
   },
   components:{

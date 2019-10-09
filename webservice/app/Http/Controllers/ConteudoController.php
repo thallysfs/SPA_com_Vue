@@ -8,6 +8,16 @@ use App\Conteudo;
 class ConteudoController extends Controller
 {
 
+
+    public function lista(Request $request){
+
+        $conteudos = Conteudo::with('user')->orderBy('data', 'DESC')->paginate(5);
+
+        //a variável 'conteudos' será recebida no vue pelo response
+        return ['status'=>true, "conteudos"=>$conteudos];
+
+    }
+
     public function adicionar(Request $request){
 
         $data = $request->all();
@@ -32,7 +42,6 @@ class ConteudoController extends Controller
         return ['status'=>true, "conteudos"=>$user->conteudos];
 
     }
-
 
 
 

@@ -33,7 +33,7 @@ class UsuarioController extends Controller
             //auth() é um helper que retorna a instância do autenticador
             $user = auth()->user();
             $user->token = $user->createToken($user->email)->accessToken;
-            $user->imagem = asset($user->imagem);
+            //$user->imagem = asset($user->imagem);
             return ['status'=>true, "usuario"=>$user];
             return $user;
         }else{
@@ -67,7 +67,7 @@ class UsuarioController extends Controller
         ]);
         //aqui estou criando o token para o usuário utilizando o e-mail como base
         $user->token = $user->createToken($user->email)->accessToken;
-        $user->imagem = asset($user->imagem);
+        //$user->imagem = asset($user->imagem);
 
         return ['status'=>true, "usuario"=>$user];
     }//fim do /cadastro
@@ -185,7 +185,7 @@ class UsuarioController extends Controller
         $user->save();
 
         //o helper asset monta a url da imagem
-        $user->imagem = asset($user->imagem);
+        //$user->imagem = asset($user->imagem);
         $user->token = $user->createToken($user->email)->accessToken;
         return ['status'=>true, "usuario"=>$user];
 
