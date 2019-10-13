@@ -161,9 +161,11 @@ class UsuarioController extends Controller
 
             //verifico se existe caminho de imagem e apago a imagem antiga
             if($user->imagem){
-                if(file_exists($user->imagem)){
+                //abaixo estou substituindo a / da url por nada, estou tirando ela
+                $imgUser = str_replace(asset('/'),'',$user->imagem);
+                if(file_exists($imgUser)){
                     //função para apagar arquivos
-                    unlink($user->imagem);
+                    unlink($imgUser);
                 }
             }
 

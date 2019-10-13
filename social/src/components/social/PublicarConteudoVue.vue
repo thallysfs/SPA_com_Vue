@@ -43,6 +43,14 @@ export default {
         //se status for true ele entrará no if
         if(response.data.status){
           console.log(response.data.conteudos);
+          //aqui eu alimento a variável conteúdo com string vazia para limpar o conteúdo do form após o cadastro
+          this.conteudo = {titulo:'', texto:'', link:'', imagem:''};
+
+          //Vuex - this.$store (sempre usar), commit (quando chamar um método),
+          //'setConteudosLinhaTempo' primeiro parâmetro, response.data.conteudos.data - objeto que vou atualizar
+          this.$store.commit('setConteudosLinhaTempo',response.data.conteudos.data);
+
+
         }
       }).catch(e =>{
         console.log(e)

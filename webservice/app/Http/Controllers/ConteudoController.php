@@ -39,7 +39,10 @@ class ConteudoController extends Controller
         //utilizei aqui o método do relacionamento entre essas duas tabelas
         $user->conteudos()->save($conteudo);
 
-        return ['status'=>true, "conteudos"=>$user->conteudos];
+        $conteudos = Conteudo::with('user')->orderBy('data', 'DESC')->paginate(5);
+
+        //a variável 'conteudos' será recebida no vue pelo response. abaixo listo todos os conteúdos inclusive o que acabou de ser cadastrado.
+        return ['status'=>true, "conteudos"=>$conteudos];
 
     }
 

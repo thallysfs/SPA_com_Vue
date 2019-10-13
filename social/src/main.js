@@ -19,7 +19,8 @@ var store = {
   state:{
     //coloquei uma condição de valores dentro da variável
     //sessionStorage.getItem('usuario') pegando valor do usuário pela sessão no browser
-    usuario: sessionStorage.getItem('usuario') ? JSON.parse(sessionStorage.getItem('usuario')) : null
+    usuario: sessionStorage.getItem('usuario') ? JSON.parse(sessionStorage.getItem('usuario')) : null,
+    conteudosLinhaTempo: []
   },
   //listas
   getters:{
@@ -28,12 +29,18 @@ var store = {
     },
     getToken: state =>{
       return state.usuario.token;
+    },
+    getConteudosLinhaTempo: state =>{
+      return state.conteudosLinhaTempo;
     }
   },
   //métodos para modificação do status
   mutations:{
     setUsuario(state, n){
       state.usuario = n;
+    },
+    setConteudosLinhaTempo(state, n){
+      state.conteudosLinhaTempo = n;
     },
   }
 }

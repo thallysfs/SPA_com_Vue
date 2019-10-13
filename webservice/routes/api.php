@@ -27,7 +27,16 @@ Route::middleware('auth:api')->post('/conteudo/adicionar', "ConteudoController@a
 Route::middleware('auth:api')->get('/conteudo/lista', "ConteudoController@lista");
 
 Route::get('/testes', function(){
+
     /*
+    $user = User::find(1);
+    $user2 = User::find(2);
+
+    $conteudos = Conteudo::all();
+    foreach ($conteudos as $key =>$valeu){
+        $valeu->delete();
+    }
+
     $user = User::find(1);
     $user->conteudos()->create([
         'titulo' => 'Conteudo 3',
