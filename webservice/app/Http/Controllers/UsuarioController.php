@@ -133,12 +133,12 @@ class UsuarioController extends Controller
                 return true;
             });
 
-            $valiacao = Validator::make($data, [
+            $validacao = Validator::make($data, [
                 'imagem' => 'base64image',
 
             ],['base64image'=>'Imagem inválida']);
 
-            if($valiacao->fails()){
+            if($validacao->fails()){
                 return ['status'=>false, "validacao"=>true, "erros"=>$validacao->errors()];
             }
 

@@ -51,6 +51,13 @@ export default {
           this.$store.commit('setConteudosLinhaTempo',response.data.conteudos.data);
 
 
+        }else if(response.data.status == false && response.data.validacao){
+          //onde exibirei erros de validação
+          let erros = '';
+          for(let erro of Object.values(response.data.erros)){
+            erros += erro +" ";
+          }
+          alert(erros);
         }
       }).catch(e =>{
         console.log(e)
