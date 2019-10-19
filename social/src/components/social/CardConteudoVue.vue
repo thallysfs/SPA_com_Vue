@@ -17,7 +17,8 @@
           </div>
           <div class="card-action">
             <p>
-              <i class="material-icons">favorite_border</i>
+              <a style="cursor:pointer" @click="curtida(id)"><i class="material-icons">{{curtiu}}</i>{{totalCurtidas}}</a>
+
               <i class="material-icons">insert_comment</i>
             </p>
           </div>
@@ -31,15 +32,47 @@ import GridVue from '@/components/layouts/GridVue'
 
 export default {
   name: 'CardConteudoVue',
-  props:['perfil', 'nome', 'data'],
+  props:['id','perfil', 'nome', 'data', 'totalcurtidas', 'curtiuconteudo'],
   data () {
     return {
-
+      //criei variável curtiu com o valor do ícone do coração vazio
+      curtiu: this.curtiuconteudo ? 'favorite' : 'favorite_border',
+      totalCurtidas: this.totalcurtidas
     }
   },
   components:{
     GridVue,
-  }
+  },
+  methods: {
+    curtida(id){
+
+      this.$http.put(this.$urlAPI+'conteudo/curtir/'+id,{},
+      {"headers":{"authorization":"Bearer "+ this.$store.getters.getToken}})
+      .then(response=>{
+
+        if(response.status){
+        this.totalCurtidas = response.data.curtidas;
+        this.$store.commit('setConteudosLinhaTempo',response.data.lista.conteudos.data);
+          if(this.curtiu == 'favorite_border'){
+            //favorite é o ícone do coração cheio
+            this.curtiu ='favorite';
+          }else{
+            this.curtiu ='favorite_border';
+          }
+        }else{
+          alert(response.data.erro)
+        }
+
+
+      }).catch(e => {
+        console.log(e)
+        alert("Erro: Tente novamente mais tarde!!!");
+    })
+
+
+
+    }
+  },
 }
 </script>
 
