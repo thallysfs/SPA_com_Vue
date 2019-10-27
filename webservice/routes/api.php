@@ -29,6 +29,8 @@ Route::middleware('auth:api')->put('/conteudo/curtir/{id}', "ConteudoController@
 
 Route::get('/testes', function(){
 
+
+
     /*
     $user = User::find(1);
     $user2 = User::find(2);

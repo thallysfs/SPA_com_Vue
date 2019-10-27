@@ -19,7 +19,32 @@
             <p>
               <a style="cursor:pointer" @click="curtida(id)"><i class="material-icons">{{curtiu}}</i>{{totalCurtidas}}</a>
 
-              <i class="material-icons">insert_comment</i>
+            <!-- {{comentarios.lenth}} comentarios (variável que vem do props com todos os comentários. lenth método do javascript que contas quantos registros existem )  -->
+              <a style="cursor:pointer" @click="abreComentarios(id)"><i class="material-icons">insert_comment</i>{{comentarios.length}}</a>
+            </p>
+            <p v-if="exibirComentario" class="right-align">
+              <input type="text" name="" id="" placeholder="Comentar">
+              <button class="btn waves-effect waves-light orange"><i class="material-icons">send</i></button>
+            </p>
+            <p v-if="exibirComentario">
+              <ul class="collection">
+                <li class="collection-item avatar" v-for="item in comentarios" :key="item.id">
+                  <img src="http://materializecss.com/images/yuna.jpg" alt="" class="circle">
+                  <span class="title">id usuario = {{item.user_id}} <small>{{item.data}}</small></span>
+                  <p>
+                    {{item.texto}}
+                  </p>
+                </li>
+
+                <li class="collection-item avatar">
+                  <img src="http://materializecss.com/images/yuna.jpg" alt="" class="circle">
+                  <span class="title">Maria da silva <small>12h30 12/03/2019</small></span>
+                  <p>
+                    Gostei do conteúdo!
+                  </p>
+                </li>
+
+              </ul>
             </p>
           </div>
     </div>
@@ -32,12 +57,13 @@ import GridVue from '@/components/layouts/GridVue'
 
 export default {
   name: 'CardConteudoVue',
-  props:['id','perfil', 'nome', 'data', 'totalcurtidas', 'curtiuconteudo'],
+  props:['id','perfil', 'nome', 'data', 'totalcurtidas', 'curtiuconteudo', 'comentarios'],
   data () {
     return {
       //criei variável curtiu com o valor do ícone do coração vazio
       curtiu: this.curtiuconteudo ? 'favorite' : 'favorite_border',
-      totalCurtidas: this.totalcurtidas
+      totalCurtidas: this.totalcurtidas,
+      exibirComentario: false
     }
   },
   components:{
@@ -67,12 +93,17 @@ export default {
       }).catch(e => {
         console.log(e)
         alert("Erro: Tente novamente mais tarde!!!");
-    })
+    });
 
 
 
-    }
-  },
+    },//fim do método curtida
+    abreComentarios(id){
+      this.exibirComentario = !this.exibirComentario;
+
+    }//fim do método abreComentario
+
+  }
 }
 </script>
 
