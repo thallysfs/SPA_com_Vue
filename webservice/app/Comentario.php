@@ -22,5 +22,10 @@ class Comentario extends Model
         return $this->belongsTo('App\Conteudo');
     }
 
+    public function getDataAttribute($value){
+        //pegar valor da data, cpnverter da string para data e formatar no formato brasileiro
+        return date('H:i d/m/Y',strtotime($value));
+     }
+
 
 }

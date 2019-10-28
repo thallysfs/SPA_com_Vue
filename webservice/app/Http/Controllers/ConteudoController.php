@@ -17,7 +17,7 @@ class ConteudoController extends Controller
 
         foreach($conteudos as $key => $conteudo){
             $conteudo->total_curtidas = $conteudo->curtidas()->count();
-            $conteudo->comentarios = $conteudo->comentarios;
+            $conteudo->comentarios = $conteudo->comentarios()->with('user')->get();
             $curtiu = $user->curtidas()->find($conteudo->id);
             //se o usuário tiver curtido o conteúdo, a variável curtiu terá dados
             if($curtiu){
@@ -88,8 +88,29 @@ class ConteudoController extends Controller
             return ['status'=>false, "erro"=>"Conteúdo não existe"];
         }
 
-    }
+    }//fom do método curtir
 
+    public function comentar($id, Request $request){
+        //aqui pego o id do conteúdo
+        $conteudo = Conteudo::find($id);
+
+        if($conteudo){
+            //aqui pego o usuário logado
+            $user = $request->user();
+            $user->comentarios()->create([
+                'conteudo_id' => $conteudo->id,
+                'texto' => $request->texto,
+                'data' => date('Y-m-d H:i:s')
+            ]);
+            return [
+                'status' =>true,
+                'lista' => $this->lista($request)
+            ];
+        }else{
+            return ['status'=>false, "erro"=>"Conteúdo não existe"];
+        }
+
+    }//fom do método curtir
 
 
 
