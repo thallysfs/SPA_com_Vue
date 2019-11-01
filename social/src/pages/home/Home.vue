@@ -34,6 +34,9 @@
             :txt="item.texto"
             :link ="item.link" />
         </card-conteudo-vue>
+        <button v-if="urlProximaPagina" @click="carregaPaginacao()" class="btn blue">Mais...</button>
+        <!-- A diretiva v-scroll foi criada no main.js -->
+        <div v-scroll="handleScroll"></div>
     </span>
 
   </site-template>
@@ -55,6 +58,8 @@ export default {
     return {
       //criando variável para povoa-la com os dados da session mais abaixo no created()
       usuario:false,
+      urlProximaPagina:null,
+      paraScroll: false
     }
   },
   created() {
@@ -77,19 +82,19 @@ export default {
           //pelo Laravel salvos no Vuex
           this.$store.commit('setConteudosLinhaTempo',response.data.conteudos.data);
 
+          //aqui eu pego o valor da url da próxima página
+          this.urlProximaPagina = response.data.conteudos.next_page_url;
 
         }
 
 
+        })
+
+        //aqui trataremos ou visualizaremos o erro
+        .catch(e => {
+          console.log(e)
+          alert("Erro: Tente novamente mais tarde!!!");
       })
-
-      //aqui trataremos ou visualizaremos o erro
-      .catch(e => {
-        console.log(e)
-        alert("Erro: Tente novamente mais tarde!!!");
-    })
-
-
     }
   },
   components:{
@@ -100,6 +105,48 @@ export default {
     GridVue
 
   },
+  methods: {
+    carregaPaginacao(){
+      //aqui verifico se a variável próxima página não foi alimentada, pois só faz sentido continuar se existir uma próxima url
+      if(!this.urlProximaPagina){
+        return;
+      }
+
+      this.$http.get(this.urlProximaPagina,
+      {"headers":{"authorization":"Bearer "+ this.$store.getters.getToken}})
+      .then(response => {
+        console.log(response);
+        if(response.data.status){
+          this.$store.commit('setPaginacaoConteudosLinhaTempo',response.data.conteudos.data);
+          this.urlProximaPagina = response.data.conteudos.next_page_url;
+          this.paraScroll = false;
+        }
+      })
+      .catch(e => {
+        console.log(e)
+        alert("Erro: Tente novamente mais tarde!!!");
+        alert(this.urlProximaPagina);
+      })
+
+    },//fim do método CarregaPaginacao
+
+    //médoto que irá interagir com a diretiva criada no main.js para efito da timeline infinita
+    handleScroll: function (evt, el) {
+      //console.log(window.scrollY);
+      //console.log(document.body.clientHeight);
+      if(this.paraScroll){
+        return;
+      }
+      //window.scrollY é o valor das rotações do scroll, document.body.clientHeight é o tamanho da página. 816 é a altura da página quando o scroll está no rodapé
+      if(window.scrollY >= document.body.clientHeight -916){
+        console.log('Ok');
+        this.carregaPaginacao();
+        this.paraScroll = true;
+      }
+
+    }
+  },
+
   computed:{
     // o método computado irá executar quando a página atualizar
     //após isso ele vai trazer os dados de todos os conteúdos salvos no Vuex

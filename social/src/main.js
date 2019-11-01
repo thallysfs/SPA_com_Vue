@@ -42,8 +42,25 @@ var store = {
     setConteudosLinhaTempo(state, n){
       state.conteudosLinhaTempo = n;
     },
+    setPaginacaoConteudosLinhaTempo(state, lista){
+      for(let item of lista){
+        state.conteudosLinhaTempo.push(item);
+      }
+    },
   }
-}
+};
+
+//diretiva para efeito no scroll de timeline infinita
+Vue.directive('scroll', {
+  inserted: function (el, binding) {
+    let f = function (evt) {
+      if (binding.value(evt, el)) {
+        window.removeEventListener('scroll', f)
+      }
+    }
+    window.addEventListener('scroll', f)
+  }
+})
 
 
 
